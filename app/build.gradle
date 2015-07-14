@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "androidtemplate.linkedin.com.templateapplication"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+repositories {
+  flatDir {
+    name "fileRepo"
+    dirs "repo"
+  }
+}
+
+uploadArchives {
+  repositories {
+    add project.repositories.fileRepo
+
+    ivy {
+      url '/tmp/tmp-repo'
+    }
+
+  }
+}
+
+configurations.archives.artifacts.whenObjectAdded { artifact ->
+  println "Artifact: ${artifact}"
+  println "File: ${artifact.file}"
+}
